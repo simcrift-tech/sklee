@@ -1,0 +1,230 @@
+{
+    "videos": [
+        {
+            "duration": 30,
+            "fileName": "KakaoTalk_20260120_144202621.mp4",
+            "fileUrl": "/uploads/1769303526_KakaoTalk_20260120_144202621.mp4",
+            "id": 1769303526801,
+            "scheduleTime": "2026-01-25T10:29",
+            "status": "scheduled",
+            "title": "None 2",
+            "type": "file"
+        },
+        {
+            "duration": 104.366667,
+            "fileName": "KakaoTalk_20260120_144406019.mp4",
+            "fileUrl": "/uploads/1769301953_KakaoTalk_20260120_144406019.mp4",
+            "id": 1769301953550,
+            "scheduleTime": "2026-01-25T10:30",
+            "status": "scheduled",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": 30,
+            "fileName": "KakaoTalk_20260120_144202621.mp4",
+            "fileUrl": "/uploads/1769303735_KakaoTalk_20260120_144202621.mp4",
+            "id": 1769303735822,
+            "scheduleTime": "2026-01-25T10:31",
+            "status": "scheduled",
+            "title": "None 3",
+            "type": "file"
+        }
+    ],
+    "history": [
+        {
+            "duration": "49s",
+            "id": 1769302004623,
+            "startTime": "오전 9:45:54",
+            "status": "완료",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": "59s",
+            "id": 1769302064623,
+            "startTime": "오전 9:46:45",
+            "status": "완료",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": "46s",
+            "id": 1769302244792,
+            "startTime": "오전 9:49:58",
+            "status": "완료",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": "69s",
+            "id": 1769302784533,
+            "startTime": "오전 9:58:35",
+            "status": "완료",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": "59s",
+            "id": 1769302844533,
+            "startTime": "오전 9:59:45",
+            "status": "완료",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": "59s",
+            "id": 1769302904533,
+            "startTime": "오전 10:00:45",
+            "status": "완료",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": "59s",
+            "id": 1769302964534,
+            "startTime": "오전 10:01:45",
+            "status": "완료",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": "59s",
+            "id": 1769303024533,
+            "startTime": "오전 10:02:45",
+            "status": "완료",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": "59s",
+            "id": 1769303084534,
+            "startTime": "오전 10:03:45",
+            "status": "완료",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": "58s",
+            "id": 1769303144533,
+            "startTime": "오전 10:04:45",
+            "status": "완료",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": "65s",
+            "id": 1769303324895,
+            "startTime": "오전 10:07:39",
+            "status": "완료",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": "59s",
+            "id": 1769303384896,
+            "startTime": "오전 10:08:45",
+            "status": "완료",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": "2s",
+            "id": 1769303445022,
+            "startTime": "오전 10:10:42",
+            "status": "완료",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": "52s",
+            "id": 1769303504585,
+            "startTime": "오전 10:10:52",
+            "status": "완료",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": "12s",
+            "id": 1769303539040,
+            "startTime": "오전 10:12:07",
+            "status": "완료",
+            "title": "None 2",
+            "type": "file"
+        },
+        {
+            "duration": "58s",
+            "id": 1769303625038,
+            "startTime": "오전 10:12:46",
+            "status": "완료",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": "29s",
+            "id": 1769303670039,
+            "startTime": "오전 10:14:00",
+            "status": "완료",
+            "title": "None 2",
+            "type": "file"
+        },
+        {
+            "id": 1769304704816,
+            "status": "완료",
+            "startTime": "오전 10:30:00",
+            "title": "None 1",
+            "type": "file",
+            "duration": "104s"
+        }
+    ],
+    "library": [
+        {
+            "createdAt": "2026. 1. 25.",
+            "duration": 104.366667,
+            "fileUrl": "/uploads/1769301953_KakaoTalk_20260120_144406019.mp4",
+            "id": 1769301953896,
+            "realFilename": "1769301953_KakaoTalk_20260120_144406019.mp4",
+            "size": "23.54 MB",
+            "title": "KakaoTalk_20260120_144406019.mp4"
+        },
+        {
+            "createdAt": "2026. 1. 25.",
+            "duration": 18.878005,
+            "fileUrl": "/uploads/1769303526_KakaoTalk_20260120_144202621.mp4",
+            "id": 1769303526944,
+            "realFilename": "1769303526_KakaoTalk_20260120_144202621.mp4",
+            "size": "3.13 MB",
+            "title": "KakaoTalk_20260120_144202621.mp4"
+        },
+        {
+            "createdAt": "2026. 1. 25.",
+            "duration": 18.878005,
+            "fileUrl": "/uploads/1769303735_KakaoTalk_20260120_144202621.mp4",
+            "id": 1769303735883,
+            "realFilename": "1769303735_KakaoTalk_20260120_144202621.mp4",
+            "size": "3.13 MB",
+            "title": "KakaoTalk_20260120_144202621.mp4"
+        }
+    ],
+    "marquee": {
+        "active": true,
+        "bg": "transparent",
+        "color": "#ffffff",
+        "size": "3rem",
+        "speed": "30s",
+        "text": "오늘의 날씨 서울 날씨: 맑음, 기온: -9.8°C"
+    },
+    "iot_devices": [
+        {
+            "name": "Lobby_Main_TV",
+            "id": "ebc987e0d8398c3dd67caz",
+            "key": "ZIQzI.4q3QQJGIV6",
+            "icon": "tv",
+            "version": "3.4"
+        }
+    ],
+    "storage": {
+        "total": 307200,
+        "used": 0
+    }
+}

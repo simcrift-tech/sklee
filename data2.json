@@ -1,0 +1,328 @@
+{
+    "videos": [
+        {
+            "duration": 104.366667,
+            "fileName": "KakaoTalk_20260120_144406019.mp4",
+            "fileUrl": "/uploads/1769344811_KakaoTalk_20260120_144406019.mp4",
+            "id": 1769344811533,
+            "scheduleTime": "2026-01-25T21:40",
+            "status": "scheduled",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": 612,
+            "fileName": "KakaoTalk_20260120_144130910.mp4",
+            "fileUrl": "/uploads/1769344822_KakaoTalk_20260120_144130910.mp4",
+            "id": 1769344822768,
+            "scheduleTime": "2026-01-25T21:40",
+            "status": "scheduled",
+            "title": "None 2",
+            "type": "file"
+        },
+        {
+            "duration": 644,
+            "fileName": "1769344435_KakaoTalk_20260120_144406019.mp4",
+            "fileUrl": "/uploads/1769344435_KakaoTalk_20260120_144406019.mp4",
+            "id": 1769345061628,
+            "scheduleTime": "2026-01-25T21:44",
+            "status": "scheduled",
+            "title": "1769344435_KakaoTalk_20260120_144406019.mp4",
+            "type": "file"
+        },
+        {
+            "duration": 3540,
+            "fileName": "KakaoTalk_20260120_144220334.mp4",
+            "fileUrl": "/uploads/1769398673_KakaoTalk_20260120_144220334.mp4",
+            "id": 1769398673617,
+            "scheduleTime": "2026-01-26T12:31",
+            "status": "scheduled",
+            "title": "None 7",
+            "type": "file"
+        },
+        {
+            "duration": 1500,
+            "fileName": "KakaoTalk_20260120_144204680.mp4",
+            "fileUrl": "/uploads/1769398628_KakaoTalk_20260120_144204680.mp4",
+            "id": 1769398628235,
+            "scheduleTime": "2026-01-26T13:33",
+            "status": "scheduled",
+            "title": "None 6",
+            "type": "file"
+        },
+        {
+            "duration": 2340,
+            "fileName": "1.__.mp4",
+            "fileUrl": "/uploads/1769400728_1.__.mp4",
+            "id": 1769400716250,
+            "scheduleTime": "2026-01-26T14:01",
+            "status": "scheduled",
+            "title": "None 9",
+            "type": "file"
+        },
+        {
+            "duration": 1860,
+            "id": 1769403843451,
+            "scheduleTime": "2026-01-26T14:43",
+            "status": "scheduled",
+            "title": "태연",
+            "type": "youtube",
+            "youtubeId": "NHXUM-6a3dU"
+        },
+        {
+            "duration": 2520,
+            "fileName": "KakaoTalk_20260120_144202621.mp4",
+            "fileUrl": "/uploads/1769398566_KakaoTalk_20260120_144202621.mp4",
+            "id": 1769398566130,
+            "scheduleTime": "2026-01-26T15:14",
+            "status": "scheduled",
+            "title": "None 5",
+            "type": "file"
+        },
+        {
+            "duration": 1260,
+            "fileName": "KakaoTalk_20260120_144130910.mp4",
+            "fileUrl": "/uploads/1769398556_KakaoTalk_20260120_144130910.mp4",
+            "id": 1769398556875,
+            "scheduleTime": "2026-01-26T15:59",
+            "status": "scheduled",
+            "title": "None 4",
+            "type": "file"
+        },
+        {
+            "duration": 104.366667,
+            "fileName": "KakaoTalk_20260120_144406019.mp4",
+            "fileUrl": "/uploads/1769398702_KakaoTalk_20260120_144406019.mp4",
+            "id": 1769398701929,
+            "scheduleTime": "2026-01-26T17:40",
+            "status": "scheduled",
+            "title": "None 8",
+            "type": "file"
+        }
+    ],
+    "history": [
+        {
+            "duration": "92s",
+            "id": 1769344905144,
+            "startTime": "오후 9:40:12",
+            "status": "완료",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": "78s",
+            "id": 1769398652239,
+            "startTime": "오후 12:36:13",
+            "status": "완료",
+            "title": "None 4",
+            "type": "file"
+        },
+        {
+            "duration": "15s",
+            "id": 1769403859359,
+            "startTime": "오후 2:04:03",
+            "status": "완료",
+            "title": "태연",
+            "type": "youtube"
+        },
+        {
+            "duration": "279s",
+            "id": 1769404180358,
+            "startTime": "오후 2:05:00",
+            "status": "완료",
+            "title": "태연",
+            "type": "youtube"
+        },
+        {
+            "id": 1769416946996,
+            "status": "완료",
+            "startTime": "오후 5:40:26",
+            "title": "None 8",
+            "type": "file",
+            "duration": "120s"
+        }
+    ],
+    "library": [
+        {
+            "createdAt": "2026-01-25",
+            "fileUrl": "/uploads/1769344435_KakaoTalk_20260120_144220334.mp4",
+            "file_type": "video",
+            "id": 1769344771188,
+            "realFilename": "1769344435_KakaoTalk_20260120_144220334.mp4",
+            "size": "3.78 MB",
+            "title": "1769344435_KakaoTalk_20260120_144220334.mp4"
+        },
+        {
+            "createdAt": "2026-01-25",
+            "duration": 104.366667,
+            "fileUrl": "/uploads/1769344435_KakaoTalk_20260120_144406019.mp4",
+            "file_type": "video",
+            "id": 1769344771189,
+            "realFilename": "1769344435_KakaoTalk_20260120_144406019.mp4",
+            "size": "23.54 MB",
+            "title": "1769344435_KakaoTalk_20260120_144406019.mp4"
+        },
+        {
+            "createdAt": "2026-01-25",
+            "fileUrl": "/uploads/1769344436_KakaoTalk_20260120_144459747.mp4",
+            "file_type": "video",
+            "id": 1769344771190,
+            "realFilename": "1769344436_KakaoTalk_20260120_144459747.mp4",
+            "size": "26.87 MB",
+            "title": "1769344436_KakaoTalk_20260120_144459747.mp4"
+        },
+        {
+            "createdAt": "2026-01-25",
+            "fileUrl": "/uploads/1769344450_KakaoTalk_20260120_144130910.mp4",
+            "file_type": "video",
+            "id": 1769344771191,
+            "realFilename": "1769344450_KakaoTalk_20260120_144130910.mp4",
+            "size": "4.90 MB",
+            "title": "1769344450_KakaoTalk_20260120_144130910.mp4"
+        },
+        {
+            "createdAt": "2026-01-25",
+            "fileUrl": "/uploads/1769344553_KakaoTalk_20260120_144406019.mp4",
+            "file_type": "video",
+            "id": 1769344771192,
+            "realFilename": "1769344553_KakaoTalk_20260120_144406019.mp4",
+            "size": "23.54 MB",
+            "title": "1769344553_KakaoTalk_20260120_144406019.mp4"
+        },
+        {
+            "createdAt": "2026-01-25",
+            "fileUrl": "/uploads/1769344571_KakaoTalk_20260120_144406019.mp4",
+            "file_type": "video",
+            "id": 1769344771193,
+            "realFilename": "1769344571_KakaoTalk_20260120_144406019.mp4",
+            "size": "23.54 MB",
+            "title": "1769344571_KakaoTalk_20260120_144406019.mp4"
+        },
+        {
+            "createdAt": "2026-01-25",
+            "fileUrl": "/uploads/1769344600_KakaoTalk_20260120_144459747.mp4",
+            "file_type": "video",
+            "id": 1769344771195,
+            "realFilename": "1769344600_KakaoTalk_20260120_144459747.mp4",
+            "size": "26.87 MB",
+            "title": "1769344600_KakaoTalk_20260120_144459747.mp4"
+        },
+        {
+            "createdAt": "2026-01-25",
+            "fileUrl": "/uploads/1769344652_KakaoTalk_20260120_144459747.mp4",
+            "file_type": "video",
+            "id": 1769344771196,
+            "realFilename": "1769344652_KakaoTalk_20260120_144459747.mp4",
+            "size": "26.87 MB",
+            "title": "1769344652_KakaoTalk_20260120_144459747.mp4"
+        },
+        {
+            "createdAt": "2026-01-25",
+            "fileUrl": "/uploads/1769344659_KakaoTalk_20260120_144406019.mp4",
+            "file_type": "video",
+            "id": 1769344771197,
+            "realFilename": "1769344659_KakaoTalk_20260120_144406019.mp4",
+            "size": "23.54 MB",
+            "title": "1769344659_KakaoTalk_20260120_144406019.mp4"
+        },
+        {
+            "createdAt": "2026. 1. 25.",
+            "duration": 104.366667,
+            "fileUrl": "/uploads/1769344811_KakaoTalk_20260120_144406019.mp4",
+            "id": 1769344811707,
+            "realFilename": "1769344811_KakaoTalk_20260120_144406019.mp4",
+            "size": "23.54 MB",
+            "title": "KakaoTalk_20260120_144406019.mp4"
+        },
+        {
+            "createdAt": "2026. 1. 25.",
+            "duration": 12.25,
+            "fileUrl": "/uploads/1769344822_KakaoTalk_20260120_144130910.mp4",
+            "id": 1769344822846,
+            "realFilename": "1769344822_KakaoTalk_20260120_144130910.mp4",
+            "size": "4.90 MB",
+            "title": "KakaoTalk_20260120_144130910.mp4"
+        },
+        {
+            "createdAt": "2026. 1. 26.",
+            "duration": 12.25,
+            "fileUrl": "/uploads/1769398556_KakaoTalk_20260120_144130910.mp4",
+            "id": 1769398556955,
+            "realFilename": "1769398556_KakaoTalk_20260120_144130910.mp4",
+            "size": "4.90 MB",
+            "title": "KakaoTalk_20260120_144130910.mp4"
+        },
+        {
+            "createdAt": "2026. 1. 26.",
+            "duration": 18.878005,
+            "fileUrl": "/uploads/1769398566_KakaoTalk_20260120_144202621.mp4",
+            "id": 1769398566191,
+            "realFilename": "1769398566_KakaoTalk_20260120_144202621.mp4",
+            "size": "3.13 MB",
+            "title": "KakaoTalk_20260120_144202621.mp4"
+        },
+        {
+            "createdAt": "2026. 1. 26.",
+            "duration": 71.4,
+            "fileUrl": "/uploads/1769398628_KakaoTalk_20260120_144204680.mp4",
+            "id": 1769398628400,
+            "realFilename": "1769398628_KakaoTalk_20260120_144204680.mp4",
+            "size": "22.04 MB",
+            "title": "KakaoTalk_20260120_144204680.mp4"
+        },
+        {
+            "createdAt": "2026. 1. 26.",
+            "duration": 16.033333,
+            "fileUrl": "/uploads/1769398673_KakaoTalk_20260120_144220334.mp4",
+            "id": 1769398673694,
+            "realFilename": "1769398673_KakaoTalk_20260120_144220334.mp4",
+            "size": "3.78 MB",
+            "title": "KakaoTalk_20260120_144220334.mp4"
+        },
+        {
+            "createdAt": "2026. 1. 26.",
+            "duration": 104.366667,
+            "fileUrl": "/uploads/1769398702_KakaoTalk_20260120_144406019.mp4",
+            "id": 1769398702110,
+            "realFilename": "1769398702_KakaoTalk_20260120_144406019.mp4",
+            "size": "23.54 MB",
+            "title": "KakaoTalk_20260120_144406019.mp4"
+        },
+        {
+            "createdAt": "2026. 1. 26.",
+            "duration": 1988.7868,
+            "fileUrl": "/uploads/1769400728_1.__.mp4",
+            "id": 1769400731634,
+            "realFilename": "1769400728_1.__.mp4",
+            "size": "770.41 MB",
+            "title": "1.__.mp4"
+        }
+    ],
+    "marquee": {
+        "active": true,
+        "bg": "transparent",
+        "color": "#ffffff",
+        "size": "2rem",
+        "speed": "80s",
+        "text": "탈원전 李정부의 유턴 “신규 원전 계획대로 건설” - 조선일보   📢   종묘 앞 재개발 본격화에 국가유산청 반발‥\"전면 재검토 필요\" - MBC 뉴스   📢   이 대통령 지지율 53% 제자리…“오천피 이뤘지만 이혜훈 악재” [리얼미터] - 한겨레   📢   콜비 차관 “한국은 모범동맹, 한반도 방위에 주도적 역할” - 조선일보   📢   조국혁신당, 與 흡수 합당 해석 여지에 “강력한 유감” - 조선일보"
+    },
+    "iot_devices": [
+        {
+            "icon": "tv",
+            "id": "ebe3679542e94a90bfv2n6",
+            "key": "+^A$*TKBjHPD:e.v",
+            "name": "TV제어",
+            "status": true,
+            "version": "3.4"
+        },
+        {
+            "icon": "monitor",
+            "id": "eb70a26d6b170642e1uojk",
+            "key": "])tm?*V8<ZPqg00[",
+            "name": "pPC3",
+            "status": true,
+            "version": "3.3"
+        }
+    ],
+    "storage": {}
+}

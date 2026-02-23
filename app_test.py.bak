@@ -1,0 +1,384 @@
+import os
+import sys
+import time
+import socket
+import json
+import hashlib
+import mimetypes
+import urllib.request
+import xml.etree.ElementTree as ET
+import tinytuya  # [필수] pip install tinytuya
+import threading
+import cv2       # [필수] pip install opencv-python
+import mss       # [필수] pip install mss
+import numpy as np # [필수] pip install numpy
+from datetime import datetime
+from flask import Flask, render_template, request, jsonify, send_from_directory, Response
+from werkzeug.utils import secure_filename
+
+app = Flask(__name__)
+
+# --- 기본 설정 ---
+if getattr(sys, 'frozen', False):
+    BASE_DIR = os.path.dirname(sys.executable)
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
+DATA_FILE = os.path.join(BASE_DIR, 'data.json')
+CONFIG_FILE = os.path.join(BASE_DIR, 'config.json')
+
+ALLOWED_EXTENSIONS = {'mp4', 'webm', 'ogg', 'mov', 'jpg', 'jpeg', 'png', 'pdf'}
+DEFAULT_PASSWORD_HASH = "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4"
+
+# [중요] Tinytuya 연결 객체를 저장할 전역 메모리 변수
+iot_devices_map = {}
+
+# [IOT] 기본 장비 데이터 템플릿
+DEFAULT_IOT_DEVICES = [
+    {
+        'name': 'Lobby_TV', 
+        'id': 'ebe3679542e94a90bfv2n6',  # [수정필요] 실제 Device ID
+        'key': '+^A$*TKBjHPD:e.v',   # [수정필요] 실제 Local Key
+        'ip': '192.168.0.4',        # [수정필요] 실제 IP 주소
+        'version': 3.4,              # 프로토콜 버전
+        'icon': 'tv',
+        'group': '1층 로비',
+        'status': False
+    }
+]
+
+def load_data_from_file():
+    if not os.path.exists(DATA_FILE):
+        default_data = {
+            'videos': [], 'history': [], 'library': [],
+            'marquee': {'active': False, 'text': '긴급 공지사항입니다.', 'color': '#ffffff', 'bg': '#ef4444', 'size': '3rem', 'speed': '30s'},
+            'iot_devices': DEFAULT_IOT_DEVICES,
+            'storage': {'total': 300 * 1024, 'used': 0}
+        }
+        with open(DATA_FILE, 'w', encoding='utf-8') as f:
+            json.dump(default_data, f, indent=4)
+        return default_data
+    else:
+        try:
+            with open(DATA_FILE, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                if 'iot_devices' not in data: data['iot_devices'] = DEFAULT_IOT_DEVICES
+                if 'library' not in data: data['library'] = []
+                return data
+        except: return {}
+
+if not os.path.exists(CONFIG_FILE):
+    with open(CONFIG_FILE, 'w', encoding='utf-8') as f: json.dump({'password_hash': DEFAULT_PASSWORD_HASH}, f)
+
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+current_broadcast = { 'is_live': False, 'type': None, 'src': None, 'title': '', 'timestamp': 0 }
+
+# --- [기능 1] 화면 캡처 제너레이터 (화면 송출용) ---
+def generate_screen_stream():
+    with mss.mss() as sct:
+        if not sct.monitors: return b''
+        monitor = sct.monitors[1] if len(sct.monitors) > 1 else sct.monitors[0]
+        while True:
+            try:
+                screenshot = sct.grab(monitor)
+                img_np = np.array(screenshot)
+                frame = cv2.cvtColor(img_np, cv2.COLOR_BGRA2BGR)
+                frame = cv2.resize(frame, (1280, 720)) 
+                ret, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 60])
+                frame_bytes = buffer.tobytes()
+                yield (b'--frame\r\n'
+                       b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+                time.sleep(0.05)
+            except Exception as e:
+                print(f"Screen Capture Error: {e}")
+                time.sleep(1)
+
+# --- 유틸리티 함수 ---
+def get_password_hash(pwd): return hashlib.sha256(pwd.encode()).hexdigest()
+def check_password(pwd):
+    try:
+        with open(CONFIG_FILE, 'r', encoding='utf-8') as f: return json.load(f).get('password_hash') == get_password_hash(pwd)
+    except: return False
+def update_password(new_pwd):
+    try:
+        with open(CONFIG_FILE, 'w', encoding='utf-8') as f: json.dump({'password_hash': get_password_hash(new_pwd)}, f)
+        return True
+    except: return False
+def allowed_file(filename): return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+def get_ip_address():
+    try: s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM); s.connect(("8.8.8.8", 80)); ip = s.getsockname()[0]; s.close(); return ip
+    except: return "127.0.0.1"
+
+# --- [기능 2] IoT 장비 초기화 함수 ---
+def init_iot_devices():
+    global iot_devices_map
+    print("\n" + "="*50)
+    print("🔌 [System] IoT 장비 연결 초기화 시작...")
+    
+    data = load_data_from_file()
+    device_list = data.get('iot_devices', [])
+    iot_devices_map = {}
+    
+    for config in device_list:
+        dev_id = config.get('id')
+        dev_ip = config.get('ip')
+        dev_key = config.get('key')
+        
+        # [수정] 테스트를 위해 더미 데이터 체크 로직을 주석 처리함 (무조건 시도)
+        # if not dev_id or 'dummy' in dev_id or not dev_ip: 
+        #     print(f"   ⚠️  스킵됨: {config.get('name')} (유효하지 않은 정보)")
+        #     continue
+        
+        print(f"   ⏳ 객체 생성 시도: {config['name']} ({dev_ip})...")
+        try:
+            # 타임아웃을 0.5초로 줄여서 부팅 속도 향상 (장비가 없으면 어차피 실패하므로)
+            d = tinytuya.OutletDevice(
+                dev_id=dev_id, 
+                address=dev_ip, 
+                local_key=dev_key, 
+                connection_timeout=0.5
+            )
+            
+            version = float(config.get('version', 3.3))
+            d.set_version(version)
+            d.set_socketPersistent(True) 
+
+            iot_devices_map[dev_id] = { 
+                'device': d, 
+                'name': config['name'], 
+                'ip': dev_ip
+            }
+            print(f"   ✅ 가상 객체 등록 완료: {config['name']}")
+            
+        except Exception as e:
+            print(f"      ❌ 객체 생성 실패: {e}")
+            
+    print("🔌 [System] 초기화 완료.")
+    print("="*50 + "\n")
+# --- [기능 3] 폴더 스캔 및 라이브러리 동기화 ---
+def sync_library():
+    print("📂 [System] Uploads 폴더 스캔 중...")
+    data = load_data_from_file()
+    library = data.get('library', [])
+    existing_filenames = set(item['realFilename'] for item in library)
+    
+    if not os.path.exists(UPLOAD_FOLDER): os.makedirs(UPLOAD_FOLDER)
+    disk_files = os.listdir(UPLOAD_FOLDER)
+    added_count = 0
+    
+    for filename in disk_files:
+        if allowed_file(filename) and filename not in existing_filenames:
+            filepath = os.path.join(UPLOAD_FOLDER, filename)
+            size_mb = os.path.getsize(filepath) / (1024 * 1024)
+            creation_time = datetime.fromtimestamp(os.path.getctime(filepath)).strftime('%Y-%m-%d')
+            ext = filename.rsplit('.', 1)[1].lower()
+            ftype = 'video' if ext in ['mp4','webm','mov'] else ('image' if ext in ['jpg','png','jpeg'] else 'doc')
+            new_item = {
+                'id': int(time.time() * 1000) + added_count,
+                'title': filename,
+                'realFilename': filename,
+                'fileUrl': f'/uploads/{filename}',
+                'size': f"{size_mb:.2f} MB",
+                'file_type': ftype,
+                'createdAt': creation_time
+            }
+            library.append(new_item)
+            existing_filenames.add(filename)
+            added_count += 1
+            print(f"   ➕ 파일 감지 및 등록: {filename}")
+
+    if added_count > 0:
+        data['library'] = library
+        with open(DATA_FILE, 'w', encoding='utf-8') as f: json.dump(data, f, ensure_ascii=False, indent=4)
+        print(f"📂 [System] 총 {added_count}개의 새 파일 등록 완료.")
+    else:
+        print("📂 [System] 새로운 파일이 없습니다.")
+
+# --- API ---
+
+@app.route('/stream_screen')
+def stream_screen():
+    return Response(generate_screen_stream(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/api/data', methods=['GET'])
+def get_data():
+    data = load_data_from_file()
+    total_size = 0
+    if os.path.exists(UPLOAD_FOLDER):
+        for f in os.listdir(UPLOAD_FOLDER):
+            fp = os.path.join(UPLOAD_FOLDER, f)
+            if os.path.isfile(fp): total_size += os.path.getsize(fp)
+    if 'storage' not in data:
+        	data['storage'] = {}   # 'storage' 키를 빈 딕셔너리로 생성
+        #data['storage']['used'] = round(total_size / (1024 * 1024), 2)
+    return jsonify(data)
+
+@app.route('/api/data', methods=['POST'])
+def save_data():
+    try:
+        current = load_data_from_file()
+        current.update(request.json)
+        with open(DATA_FILE, 'w', encoding='utf-8') as f: json.dump(current, f, ensure_ascii=False, indent=4)
+        return jsonify({'success': True})
+    except: return jsonify({'success': False}), 500
+
+@app.route('/api/iot/status', methods=['GET'])
+def get_iot_status():
+    data = load_data_from_file()
+    devices_config = data.get('iot_devices', [])
+    status_list = []
+    for conf in devices_config:
+        dev_id = conf.get('id')
+        is_on = False
+        if dev_id in iot_devices_map:
+            try:
+                device = iot_devices_map[dev_id]['device']
+                status_data = device.status() 
+                if status_data and 'dps' in status_data:
+                    dps = status_data['dps']
+                    if '1' in dps: is_on = bool(dps['1'])
+                    elif '20' in dps: is_on = bool(dps['20'])
+                    else: is_on = True
+            except: is_on = False
+        status_list.append({
+            'id': dev_id, 'name': conf.get('name'), 'icon': conf.get('icon', 'tv'),
+            'isOn': is_on, 'schedule': conf.get('schedule', {'enabled': False})
+        })
+    return jsonify(status_list)
+
+@app.route('/api/iot/control', methods=['POST'])
+def control_iot_device():
+    req = request.json
+    dev_id = req.get('id')
+    action = req.get('action')
+    print(f"📡 [Control] 요청: ID={dev_id}, Action={action}")
+    success = False
+    error_msg = ""
+    if dev_id in iot_devices_map:
+        try:
+            device = iot_devices_map[dev_id]['device']
+            if action == 'on': res = device.turn_on()
+            else: res = device.turn_off()
+            if res and 'Error' not in str(res): 
+                success = True
+                time.sleep(0.5)
+            else: error_msg = f"장비 응답 에러: {res}"
+        except Exception as e: error_msg = f"통신 예외: {str(e)}"
+    else: error_msg = "초기화된 장비 객체 없음"
+    
+    if success:
+        data = load_data_from_file()
+        for d in data.get('iot_devices', []):
+            if d['id'] == dev_id:
+                d['status'] = (action == 'on')
+                break
+        with open(DATA_FILE, 'w', encoding='utf-8') as f: json.dump(data, f, ensure_ascii=False, indent=4)
+    return jsonify({'success': success, 'message': error_msg})
+
+@app.route('/api/iot/schedule', methods=['POST'])
+def save_iot_schedule():
+    req = request.json
+    dev_id = req.get('id')
+    data = load_data_from_file()
+    for d in data.get('iot_devices', []):
+        if d['id'] == dev_id:
+            d['schedule'] = {'on_time': req.get('on_time'), 'off_time': req.get('off_time'), 'enabled': req.get('enabled')}
+            break
+    with open(DATA_FILE, 'w', encoding='utf-8') as f: json.dump(data, f, ensure_ascii=False, indent=4)
+    return jsonify({'success': True})
+
+@app.route('/api/settings/iot', methods=['POST'])
+def save_iot_settings():
+    if not check_password(request.json.get('password')): return jsonify({'success': False}), 403
+    try:
+        data = load_data_from_file()
+        data['iot_devices'] = request.json.get('devices', [])
+        with open(DATA_FILE, 'w', encoding='utf-8') as f: json.dump(data, f, ensure_ascii=False, indent=4)
+        init_iot_devices()
+        return jsonify({'success': True})
+    except Exception as e: return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if not check_password(request.form.get('password')): return jsonify({'success': False}), 403
+    f = request.files.get('file')
+    if not f or f.filename == '' or not allowed_file(f.filename): return jsonify({'success': False}), 400
+    fn = secure_filename(f.filename); sn = f"{int(time.time())}_{fn}"
+    path = os.path.join(app.config['UPLOAD_FOLDER'], sn); f.save(path)
+    sync_library()
+    size_mb = os.path.getsize(path) / (1024 * 1024)
+    ext = fn.rsplit('.', 1)[1].lower()
+    ftype = 'video' if ext in ['mp4','webm','mov'] else ('image' if ext in ['jpg','png','jpeg'] else 'doc')
+    return jsonify({'success': True, 'url': f'/uploads/{sn}', 'filename': fn, 'real_filename': sn, 'size': f"{size_mb:.2f} MB", 'file_type': ftype})
+
+@app.route('/delete_file', methods=['POST'])
+def delete_single_file():
+    if not check_password(request.json.get('password')): return jsonify({'success': False}), 403
+    try:
+        p = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(request.json.get('filename')))
+        if os.path.exists(p): os.remove(p)
+        return jsonify({'success': True})
+    except: return jsonify({'success': False}), 500
+
+@app.route('/clear_files', methods=['POST'])
+def clear_all_files():
+    if not check_password(request.json.get('password')): return jsonify({'success': False}), 403
+    try:
+        for f in os.listdir(UPLOAD_FOLDER): os.remove(os.path.join(UPLOAD_FOLDER, f))
+        return jsonify({'success': True})
+    except: return jsonify({'success': False}), 500
+
+@app.route('/api/verify_password', methods=['POST'])
+def verify_password_api(): return jsonify({'success': True}) if check_password(request.json.get('password')) else (jsonify({'success': False}), 403)
+
+@app.route('/api/change_password', methods=['POST'])
+def change_password_api():
+    d = request.json
+    if not check_password(d.get('current_password')): return jsonify({'success': False, 'message': '비밀번호 오류'}), 403
+    return jsonify({'success': True}) if update_password(d.get('new_password')) else (jsonify({'success': False}), 500)
+
+@app.route('/api/live/update', methods=['POST'])
+def update_live_status():
+    current_broadcast.update(request.json); current_broadcast['timestamp'] = time.time()
+    return jsonify({'success': True})
+
+@app.route('/api/live/status', methods=['GET'])
+def get_live_status(): return jsonify(current_broadcast)
+
+@app.route('/api/news', methods=['GET'])
+def get_news():
+    try:
+        url = "https://news.google.com/rss?hl=ko&gl=KR&ceid=KR:ko"
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req) as response:
+            xml_data = response.read(); root = ET.fromstring(xml_data)
+            headlines = [item.find('title').text for item in root.findall('.//item')[:5]]
+            return jsonify({'success': True, 'text': "   📢   ".join(headlines)})
+    except: return jsonify({'success': False, 'text': '뉴스 정보를 불러오지 못했습니다.'})
+
+@app.route('/')
+def index(): return render_template('index.html', server_ip=get_ip_address())
+	return render_template('index.html')
+@app.route('/suplay')
+def suplay_page():
+	return render_template('suplay.html')
+@app.route('/m')
+def mobile_index(): return render_template('mindex.html')
+@app.route('/uploads/<name>')
+def download_file(name): return send_from_directory(app.config['UPLOAD_FOLDER'], name)
+
+if __name__ == '__main__':
+    sync_library()
+    try: init_iot_devices()
+    except Exception as e: print(f"IoT 초기화 오류: {e}")
+    ip = get_ip_address()
+    print("\n" + "="*50)
+    print(f"🚀 LG전자 구독&케어 CMS Server Started")
+    print(f"👉 접속 주소: http://{ip}:5000")
+    print(f"📺 화면 송출: http://{ip}:5000/stream_screen")
+    print("="*50 + "\n")
+    app.run(host='0.0.0.0', port=5000, debug=True)

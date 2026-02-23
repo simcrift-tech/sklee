@@ -1,0 +1,75 @@
+{
+    "videos": [
+        {
+            "duration": 1988.7868,
+            "fileName": "1769400728_1.__.mp4",
+            "fileUrl": "/uploads/1769400728_1.__.mp4",
+            "id": 1770007363914,
+            "scheduleTime": "2026-02-06T15:02",
+            "status": "scheduled",
+            "title": "1769400728_1.__.mp4",
+            "type": "file"
+        },
+        {
+            "duration": 960,
+            "fileName": "1769344435_KakaoTalk_20260120_144220334.mp4",
+            "fileUrl": "/uploads/1769470420_1769344435_KakaoTalk_20260120_144220334.mp4",
+            "id": 1769470420234,
+            "scheduleTime": "2026-02-06T15:22",
+            "status": "scheduled",
+            "title": "None 1",
+            "type": "file"
+        },
+        {
+            "duration": 600,
+            "fileName": "1769344435_KakaoTalk_20260120_144406019.mp4",
+            "fileUrl": "/uploads/1770007256_1769344435_KakaoTalk_20260120_144406019.mp4",
+            "id": 1770007256140,
+            "scheduleTime": "2026-02-06T15:35",
+            "status": "scheduled",
+            "title": "None 3",
+            "type": "file"
+        },
+        {
+            "duration": 568,
+            "id": 1769472238440,
+            "scheduleTime": "2026-02-06T15:46",
+            "status": "scheduled",
+            "title": "하이케어1",
+            "type": "youtube",
+            "youtubeId": "NsRwZmsY4SE"
+        }
+    ],
+    "history": [],
+    "library": [],
+    "marquee": {
+        "active": false,
+        "text": "긴급 공지",
+        "color": "#ffffff",
+        "bg": "transparent",
+        "size": "2rem",
+        "speed": "80s"
+    },
+    "iot_devices": [
+        {
+            "icon": "tv",
+            "id": "ebe3679542e94a90bfv2n6",
+            "key": "+^A$*TKBjHPD:e.v",
+            "name": "11",
+            "status": true,
+            "version": "3.4"
+        },
+        {
+            "name": "22",
+            "id": "eb70a26d6b170642e1uojk",
+            "key": "])tm?*V8<ZPqg00[",
+            "icon": "tv",
+            "version": "3.3",
+            "status": true
+        }
+    ],
+    "storage": {
+        "total": 307200,
+        "used": 0
+    }
+}
